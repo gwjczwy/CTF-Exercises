@@ -1,0 +1,42 @@
+{% load staticfiles %}
+{% include "./head.html" %}
+
+	<div style="text-align: center;">
+		<img style="margin: 30px auto 0;" title="网盘搜索" src="{% static "tools/surl.png" %}">
+		<div style="margin: 30px auto 30px;" class="form-inline" name="searcNhBar">
+				<input id="name" type="text" class="form-control" placeholder="请输入完整链接">
+				<input type="submit" class="btn btn-info" value="一键生成" onclick="send()">
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function send()
+		{
+			var content = document.getElementById("input").value;
+			$.post('/query', {'content':content,'checkValue':check,'checkId':checkid},
+				function(data){
+					if(data['message']=="success"){
+                        var d=document.getElementById("result");
+                        while(d.hasChildNodes()) //清空结果集
+                        {
+                            d.removeChild(d.firstChild); 
+                        }
+                        var arr=data['content']//添加搜索到的数据
+                        for(var i = 0, len = arr.length; i < len; i++){
+                            d.insertAdjacentHTML('beforeend',arr[i]);
+                        }
+					}else{
+                        var d=document.getElementById("result");
+                        while(d.hasChildNodes()) //清空结果集
+                        {
+                            d.removeChild(d.firstChild); 
+                        }
+                        d.insertAdjacentHTML('beforeend','<h1>完蛋,出错了!!</h1>');
+					}
+				}
+			);
+		}
+	</script>
+
+
+</html>

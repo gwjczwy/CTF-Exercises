@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>内部人员专用工具</title>
+		<link rel="stylesheet" href="{% static "tools/bootstrap.min.css" %}">
+		<script src="{% static "tools/jquery.min.js" %}"></script>
+		<script src="{% static "tools/bootstrap.min.js" %}"></script>
+	</head>
+
+    <body>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">工具</a>
+            </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li {% if toolName == "surl" %} class="active" {% endif %}><a href="/tools/url">短链接生成器</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li {% if toolName == "shop" %} class="active" {% endif %}><a href="/tools/shop">商城</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li {% if toolName == "logs" %} class="active" {% endif %}><a href="/tools/logs">日志系统</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {%if user%} 
+            <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{user.username}}</a></li>
+            </ul>
+            {%endif%}
+        </nav>

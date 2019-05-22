@@ -1,0 +1,8 @@
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('', include('sql.urls')),
+    path('tools', include('sql.urls')),
+    # path('admin/', admin.site.urls),
+]

@@ -1,0 +1,106 @@
+{% load staticfiles %}
+{% include "./head.html" %}
+{% if toolName == "surl" %}
+	<div style="text-align: center;">
+		<img style="margin: 30px auto 0;" title="网盘搜索" src="{% static "tools/surl.png" %}">
+		<div style="margin: 30px auto 30px;" class="form-inline" name="searcNhBar">
+				<input id="fullUrl" type="text" class="form-control" placeholder="请输入完整链接">
+				<input type="submit" class="btn btn-info" value="一键生成" onclick="send()">
+		</div>
+		<h1 id='show'></h1>
+	</div>
+
+	<script type="text/javascript">
+		function send()
+		{
+			var fullUrl = document.getElementById("fullUrl").value;
+			$.post('/tools/url/createurl/', {'fullUrl':fullUrl},
+				function(data){
+					if(data['message']=="success"){
+                        var d=document.getElementById("show");
+						var domain=document.domain;
+						d.innerHTML=domain+'/tools/s/'+data['url']
+					}else{
+                        var d=document.getElementById("show");
+						d.innerHTML="完蛋,出错了!!"
+					}
+				}
+			);
+		}
+	</script>
+{% elif toolName == "shop" %}
+
+	<div style="text-align: center;">
+		<img style="margin: 30px auto 0;" title="shop" src="{% static "tools/shop.png" %}">
+		<div class="dropdown">
+				<h1><span class="label label-default" id='monero'>{{money.monero}}</span>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="label label-default" id='bitcoin'>{{money.bitcoin}}</span>
+				</h1>
+			<div style="margin: 30px auto 30px;" class="form-inline" name="searcNhBar">
+				<select class="browser-default custom-select" id="rule">
+					<option selected>兑换规则</option>
+					<option value="m2b">Monero --> Bitcoin</option>
+					<option value="b2m">Bitcoin --> Monero</option>
+				</select>
+				<input id="num" type="text" class="form-control" placeholder="请输入兑换数量">
+				<input type="submit" class="btn btn-info" value="兑换" onclick="send()">
+			</div>
+			<label id="errorLab"></label>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function send()
+		{
+			var rule = document.getElementById('rule');
+			rule = rule.options[rule.selectedIndex].value;
+			var num = document.getElementById('num').value;
+			$.post('/tools/shop/shopExchange', {'rule':rule,'num':num},
+				function(data){
+					if(data['message']=="success"){
+						document.getElementById('monero').innerText=data['monero'];
+						document.getElementById('bitcoin').innerText=data['bitcoin'];
+                        var d=document.getElementById("errorLab");
+						d.innerText=""
+					}else{
+                        var d=document.getElementById("errorLab");
+						d.innerText=data['reason'];
+					}
+				}
+			);
+
+		}
+	</script>
+{% elif toolName == "logs" %}
+
+	<div style="text-align: center;">
+		<img style="margin: 30px auto 0;" title="logs" src="{% static "tools/log.png" %}">
+		<div class="dropdown">
+			<button type="button" class="btn btn-primary btn-lg">保存备份源代码</button>
+			<div style="margin: 30px auto 30px;" class="form-inline" name="searcNhBar">
+				<input type="text" class="form-control" placeholder="输入添加内容">
+				<input type="submit" class="btn btn-info" value="伪造日志" onclick="send()">
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		function send()
+		{
+			var rule = document.getElementById('rule');
+			$.post('/tools/shop/shopExchange', {'rule':rule,'num':num},
+				function(data){
+					if(data['message']=="success"){
+						
+					}else{
+						
+					}
+				}
+			);
+
+		}
+	</script>
+{% endif %}
+</html>

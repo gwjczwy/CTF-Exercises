@@ -1,0 +1,33 @@
+{% load staticfiles %}
+{% include "./head.html" %}
+
+{% if toolName=="surl" %}
+	<div style="text-align: center;">
+		<img style="margin: 30px auto 0;" title="网盘搜索" src="{% static "tools/surl.png" %}">
+		<div style="margin: 30px auto 30px;" class="form-inline" name="searcNhBar">
+				<input id="fullUrl" type="text" class="form-control" placeholder="请输入完整链接">
+				<input type="submit" class="btn btn-info" value="一键生成" onclick="send()">
+		</div>
+		<h1 id='show'></h1>
+	</div>
+
+	<script type="text/javascript">
+		function send()
+		{
+			var fullUrl = document.getElementById("fullUrl").value;
+			$.post('/tools/url/createurl/', {'fullUrl':fullUrl},
+				function(data){
+					if(data['message']=="success"){
+                        var d=document.getElementById("show");
+						var domain=document.domain;
+						d.innerHTML=domain+'/tools/s/'+data['url']
+					}else{
+                        var d=document.getElementById("show");
+						d.innerHTML="完蛋,出错了!!"
+					}
+				}
+			);
+		}
+	</script>
+{% endif %}
+</html>
